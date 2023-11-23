@@ -26,21 +26,21 @@ const dateFormatter = new Intl.DateTimeFormat("ro-RO", options);
 fetch(URL, { method: "GET" })
 .then((response) => response.json())
 .then((data) => {
-  console.log(data.hourly.temperature_2m);
+console.log(data.hourly);
 
-  for(let i=0; i < data.hourly.temperature_2m.length; i++) {
+for (let i = 0; i < data.hourly.temperature_2m.length; i++) {
     const row = document.createElement("tr");
-    
-    const temCell = document.createElement("td");
-    temCell.innerText = data.hourly.temperature_2m[i] + "°C";
 
-    const timeCell = document.createElement("td");
-    timeCell.innerText = dateFormatter.format(new Date(data.hourly.time[i]));
-
-    row.appendChild(timeCell);
-
-    row.appendChild(temCell);
-    
+    row.appendChild(createColumn(dateFormatter.format(new Date(data.hourly.time[i]))));
+    row.appendChild(createColumn(data.hourly.temperature_2m[i] + "°C"));
     tableBody.appendChild(row);
   };
 });
+
+function createColumn(value) {
+  const cell = document.createElement("td");
+
+  cell.innerText = value;
+
+  return cell;
+};
